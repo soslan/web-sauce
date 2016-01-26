@@ -1,0 +1,32 @@
+{
+    "manifest_version": 2,
+    "name": "Web sauce",
+    "version": "0.0.1",
+    "description": "Chrome extension for adding custom CSS and JS",
+    "icons": {
+        "16": "images/icon_16x16.png",
+        "32":"images/icon_32x32.png",
+        "48": "images/icon_48x48.png",
+        "128": "images/icon_128x128.png"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://www.duolingo.com/*"],
+            "js": ["websauce.js"]
+        }
+    ],
+    "chrome_url_overrides": {
+    },
+    "permissions": [
+        "http://*/",
+        "https://*/",
+        "file:///*/",
+        "tabs",
+        "storage"
+    ],
+    "browser_action": {
+    },
+    "background": {
+        "scripts": ["background.js"]
+    }
+}
