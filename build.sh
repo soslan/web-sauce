@@ -38,13 +38,16 @@ mkdir -p $DEST/images
 mkdir -p build
 
 # A list of files to be included.
-CET_CP="manifest.json background.js websauce.js editor.html editor.js wf include"
+CET_CP="manifest.json background.js editor.html editor.js"
 
 if [ "$1" = "develop" ]; then
 	for file in $CET_CP; do
 		echo $file
 		ln -sv $(pwd)/src/$file $DEST/$file
 	done
+	ln -sv $(pwd)/vendor/wf $DEST/wf
+	ln -sv $(pwd)/vendor/jquery $DEST/jquery
+	ln -sv $(pwd)/vendor/codemirror $DEST/codemirror
 
 	render_main_icon
 else
@@ -52,6 +55,9 @@ else
 		echo $file
 		cp -v src/$file $DEST/$file
 	done
+	cp -rv vendor/wf $DEST/wf
+	cp -rv vendor/codemirror $DEST/codemirror
+	cp -rv vendor/jquery $DEST/jquery
 
 	render_main_icon
 
