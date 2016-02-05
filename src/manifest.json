@@ -5,7 +5,9 @@
     "description": "Chrome extension for adding custom CSS and JS",
     "icons": {
         "16": "images/icon_16x16.png",
+        "19": "images/icon_19x19.png",
         "32":"images/icon_32x32.png",
+        "38":"images/icon_38x38.png",
         "48": "images/icon_48x48.png",
         "128": "images/icon_128x128.png"
     },
@@ -24,7 +26,7 @@
         "tabs",
         "storage"
     ],
-    "browser_action": {
+    "page_action": {
     },
     "background": {
         "scripts": ["background.js"]

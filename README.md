@@ -22,7 +22,7 @@ TODO
 
 * Ability to add custom CSS and JavaScript to a web page by its hostname.
 * Implement wildcards for hostnames.
-* Switch to pageAction.
+* [DONE] Switch to pageAction.
 * Add hooks on webRequest.
 
 License
