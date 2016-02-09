@@ -20,7 +20,7 @@ This will result in `dist/WebSauce-develop` directory.
 TODO
 ====
 
-* Ability to add custom CSS and JavaScript to a web page by its hostname.
+* [DONE] Ability to add custom CSS and JavaScript to a web page by its hostname.
 * Implement wildcards for hostnames.
 * [DONE] Switch to pageAction.
 * Add hooks on webRequest.
