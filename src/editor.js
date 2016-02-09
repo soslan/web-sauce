@@ -1,18 +1,14 @@
 var main = new StandardWindow({
   color: "white",
 });
-
 main.addClass('full-window');
-
 
 var tabs = new TabView();
 main.append(tabs);
 
-
 var hostname = window.location.hash;
 var cssKey = "CSS_"+hostname;
 var jsKey = "js_"+hostname;
-//var cssKey = "defaultCSS";
 var wind = new StandardWindow({
   toolbarStyle: 'blue',
 });
@@ -33,7 +29,6 @@ var cm = CodeMirror(wind.body.e, {
 cm.getWrapperElement().classList.add('full-element');
 
 chrome.storage.local.get(cssKey, function(data){
-  console.log(cssKey, data);
   if(data[cssKey]!== undefined){
     cm.setValue(String(data[cssKey]));
   }
@@ -45,12 +40,9 @@ wind.toolbar.left.append(new Button({
   caption: 'Save',
   action: function(){
     var value = cm.getValue();
-    console.log(cssKey, ">>", value);
     var obj = {};
     obj[cssKey] = value;
-    chrome.storage.local.set(obj, function(){
-      //console.log("Last error", chrome.runtime.lastError);
-    });
+    chrome.storage.local.set(obj);
   },
 }));
 
@@ -65,12 +57,9 @@ jsWind.toolbar.left.append(new Button({
   caption: 'Save',
   action: function(){
     var value = jsCm.getValue();
-    console.log(jsKey, ">>", value);
     var obj = {};
     obj[jsKey] = value;
-    chrome.storage.local.set(obj, function(){
-      //console.log("Last error", chrome.runtime.lastError);
-    });
+    chrome.storage.local.set(obj);
   },
 }));
 var jsCm = CodeMirror(jsWind.body.e, {

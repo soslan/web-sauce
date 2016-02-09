@@ -18,19 +18,16 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
-  console.log(info);
   if( info.url || info.status === "loading"){
     var url = new URL(tab.url)
     if( url.protocol !== "http:" && url.protocol !== "https:" ){
       return;
     }
     var hostname = url.hostname;
-    console.log(hostname, "UPDATED");
     if(true || hostnames.indexOf(hostname) !== -1){
       var cssKey = "CSS_#"+hostname;
       var jsKey = "js_#"+hostname;
       chrome.storage.local.get(cssKey, function(data){
-        console.log(cssKey, data);
         if(data[cssKey]){
           chrome.tabs.insertCSS(tabId, {
             code: String(data[cssKey]),
@@ -39,7 +36,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
         }
       });
       chrome.storage.local.get(jsKey, function(data){
-        console.log(jsKey, data);
         if(data[jsKey]){
           chrome.tabs.executeScript(tabId, {
             code: String(data[jsKey]),
