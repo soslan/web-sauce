@@ -11,22 +11,17 @@
         "48": "images/icon_48x48.png",
         "128": "images/icon_128x128.png"
     },
-    "content_scripts": [
-        {
-            "matches": ["https://www.duolingo.com/*"],
-            "js": ["websauce.js"]
-        }
-    ],
-    "chrome_url_overrides": {
-    },
     "permissions": [
-        "http://*/",
-        "https://*/",
-        "file:///*/",
+        "<all_urls>",
         "tabs",
         "storage"
     ],
     "page_action": {
+        "default_icon": {
+            "19": "images/icon_19x19.png",
+            "38": "images/icon_38x38.png"
+        },
+        "default_title": "Custom CSS and JavaScript for this page"
     },
     "background": {
         "scripts": ["background.js"]
