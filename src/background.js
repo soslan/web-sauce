@@ -1,24 +1,24 @@
-var testStyle = "body {background: azure!important;}";
-var setStyle = "document.body.style.background = 'lime!important'; console.log('WEBSAUCE', document.body)";
 var hostnames = [];
 chrome.pageAction.onClicked.addListener(function(tab) {
   url = 'editor.html#' + new URL(tab.url).hostname;
   chrome.tabs.create({ url: url });
 });
 
-chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
-  if( info.url ) {
-    var protocol = new URL(tab.url).protocol;
-    if( protocol === "http:" || protocol === "https:" ){
-      chrome.pageAction.show(tabId);
-    }
-    else{
-      chrome.pageAction.hide(tabId);
-    }
+chrome.tabs.query({}, function(results){
+  for(var i in results){
+    var tab = results[i];
+    handlePageAction(tab);
   }
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
+  if( info.status === "loading" ) {
+    handlePageAction(tab);
+  }
+});
+
+chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
+  console.log(info);
   if( info.url || info.status === "loading"){
     var url = new URL(tab.url)
     if( url.protocol !== "http:" && url.protocol !== "https:" ){
@@ -50,3 +50,13 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
     }
   }
 });
+
+function handlePageAction(tab){
+  var protocol = new URL(tab.url).protocol;
+  if( protocol === "http:" || protocol === "https:" ){
+    chrome.pageAction.show(tab.id);
+  }
+  else{
+    chrome.pageAction.hide(tab.id);
+  }
+}
