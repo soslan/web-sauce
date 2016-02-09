@@ -41,7 +41,7 @@ chrome.storage.local.get(cssKey, function(data){
 });
 
 wind.toolbar.left.append(new Button({
-  className: 'white',
+  className: 'white quiet',
   caption: 'Save',
   action: function(){
     var value = cm.getValue();
@@ -61,7 +61,7 @@ jsWind = new StandardWindow({
 });
 jsWind.title = "JavaScript";
 jsWind.toolbar.left.append(new Button({
-  className: 'white',
+  className: 'black quiet',
   caption: 'Save',
   action: function(){
     var value = jsCm.getValue();
