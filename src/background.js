@@ -27,7 +27,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
     if(true || hostnames.indexOf(hostname) !== -1){
       var cssKey = "CSS_#"+hostname;
       var jsKey = "js_#"+hostname;
-      chrome.storage.local.get(cssKey, function(data){
+      chrome.storage.sync.get(cssKey, function(data){
         if(data[cssKey]){
           chrome.tabs.insertCSS(tabId, {
             code: String(data[cssKey]),
@@ -35,7 +35,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
           });
         }
       });
-      chrome.storage.local.get(jsKey, function(data){
+      chrome.storage.sync.get(jsKey, function(data){
         if(data[jsKey]){
           chrome.tabs.executeScript(tabId, {
             code: String(data[jsKey]),
