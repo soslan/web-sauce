@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIST_DIR=dist
-NAME="WebSauce"
+NAME="web-sauce"
 VERSION=`python -c 'import json;print(json.load(open("src/manifest.json"))["version"])'`
 echo $VERSION
 
