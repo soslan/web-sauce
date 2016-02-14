@@ -32,6 +32,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
           chrome.tabs.insertCSS(tabId, {
             code: String(data[cssKey]),
             runAt: "document_start",
+            allFrames: true,
           });
         }
       });
@@ -40,6 +41,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
           chrome.tabs.executeScript(tabId, {
             code: String(data[jsKey]),
             runAt: "document_start",
+            allFrames: true,
           });
         }
       });
