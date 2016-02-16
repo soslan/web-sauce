@@ -60,12 +60,21 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
 
 chrome.webRequest.onBeforeRequest.addListener(function(details){
   if(details.tabId != -1){
-    console.log(details.url);
+    //console.log(details.url);
     var hostname = tabHostnames[details.tabId];
     var blKey = "bl_#"+hostname;
     if(blCache[blKey] != null){
       var blackList = JSON.parse(blCache[blKey]);
       targetUrl = new URL(details.url);
+      targetSectors = targetUrl.hostname.split(".").reverse();
+      for (var i in blackList){
+        if(urlsMatch(blackList[i], targetSectors)){
+          console.log("BLOCK", targetUrl.hostname);
+          return {cancel: true};
+        }
+      }
+      console.log("PASS", targetUrl.hostname);
+      return;
       if(blackList.indexOf(targetUrl.hostname) !== -1){
         console.log("BLOCK", targetUrl.hostname);
         return {cancel: true};
@@ -82,6 +91,29 @@ chrome.webRequest.onBeforeRequest.addListener(function(details){
 }, {
   urls: ["<all_urls>"]
 }, ["blocking"]);
+
+function urlsMatch(pattern, url){
+  if(typeof pattern == "string"){
+    pattern = pattern.split(".").reverse();
+  }
+  if(typeof url == "string"){
+    url.split(".").reverse();
+  }
+  for (var i in pattern){
+    var sector1 = pattern[i];
+    var sector2 = url[i];
+    if(sector1 === "*"){
+      return true;
+    }
+    else if(sector1 === sector2){
+      continue;
+    }
+    else{
+      return false;
+    }
+  }
+  return true;
+}
 
 function handlePageAction(tab){
   var protocol = new URL(tab.url).protocol;
