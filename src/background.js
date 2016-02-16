@@ -1,4 +1,6 @@
 var hostnames = [];
+var tabHostnames = {};
+var blCache = {};
 chrome.pageAction.onClicked.addListener(function(tab) {
   url = 'editor.html#' + new URL(tab.url).hostname;
   chrome.tabs.create({ url: url });
@@ -19,14 +21,21 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
 
 chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
   if( info.url || info.status === "loading"){
-    var url = new URL(tab.url)
+    var url = new URL(tab.url);
+    var hostname = url.hostname;
     if( url.protocol !== "http:" && url.protocol !== "https:" ){
       return;
     }
-    var hostname = url.hostname;
+    tabHostnames[tabId] = hostname;
     if(true || hostnames.indexOf(hostname) !== -1){
       var cssKey = "CSS_#"+hostname;
       var jsKey = "js_#"+hostname;
+      var blKey = "bl_#"+hostname;
+      chrome.storage.sync.get(blKey, function(data){
+        if(data[blKey]){
+          blCache[blKey] = data[blKey];
+        }
+      });
       chrome.storage.sync.get(cssKey, function(data){
         if(data[cssKey]){
           chrome.tabs.insertCSS(tabId, {
@@ -48,6 +57,31 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
     }
   }
 });
+
+chrome.webRequest.onBeforeRequest.addListener(function(details){
+  if(details.tabId != -1){
+    console.log(details.url);
+    var hostname = tabHostnames[details.tabId];
+    var blKey = "bl_#"+hostname;
+    if(blCache[blKey] != null){
+      var blackList = JSON.parse(blCache[blKey]);
+      targetUrl = new URL(details.url);
+      if(blackList.indexOf(targetUrl.hostname) !== -1){
+        console.log("BLOCK", targetUrl.hostname);
+        return {cancel: true};
+      }
+      else{
+        console.log("PASS", targetUrl.hostname);
+      }
+    }
+    else{
+      //console.log("Web sauce doesn't have any webRequest hooks for", hostname);
+    }
+  }
+  //console.log(details.url);
+}, {
+  urls: ["<all_urls>"]
+}, ["blocking"]);
 
 function handlePageAction(tab){
   var protocol = new URL(tab.url).protocol;
