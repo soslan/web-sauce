@@ -1,3 +1,46 @@
+function WSTab(args){
+  var storageKey = String(args.storageKey);
+  var wind = new StandardWindow({
+    color: args.color || "orange",
+  });
+  wind.title = args.title || "Untitled";
+  wind.toolbar.left.append(new Button({
+    className: ( args.color2 ? args.color2 : 'orange' ) + ' quiet',
+    caption: 'Save',
+    action: function(){
+      var value = cm.getValue();
+      var obj = {};
+      obj[storageKey] = value;
+      chrome.storage.sync.set(obj);
+    },
+  }));
+  var cm = CodeMirror(wind.body.e, {
+    mode: args.mode || '',
+    indentWithTabs: false,
+    tabSize: 2,
+    lineNumbers: true,
+    autoRefresh:true,
+    theme: 'neat',
+  });
+  cm.getWrapperElement().classList.add('full-element');
+  wind.on('activated', function(){
+    cm.refresh();
+  });
+
+  chrome.storage.sync.get(storageKey, function(data){
+    if(data[storageKey] !== undefined){
+      cm.setValue(String(data[storageKey]));
+    }
+    cm.refresh();
+  });
+
+  this.main = wind;
+  this.cm = cm;
+  if(args.tabs instanceof Element){
+    args.tabs.append(wind);
+  }
+}
+
 var main = new StandardWindow({
   color: "white",
 });
@@ -9,80 +52,27 @@ main.append(tabs);
 var hostname = window.location.hash;
 var cssKey = "CSS_"+hostname;
 var jsKey = "js_"+hostname;
-var wind = new StandardWindow({
-  toolbarStyle: 'blue',
-});
-wind.title = "CSS";
 
 title = span(hostname.slice(1));
 title.e.style.fontSize = "25px";
 main.toolbar.append(title);
 
-var cm = CodeMirror(wind.body.e, {
-  mode: 'css',
-  indentWithTabs: false,
-  tabSize: 2,
-  lineNumbers: true,
-  autoRefresh:true,
-  theme: 'neat',
-});
-cm.getWrapperElement().classList.add('full-element');
-
-chrome.storage.sync.get(cssKey, function(data){
-  if(data[cssKey]!== undefined){
-    cm.setValue(String(data[cssKey]));
-  }
-  cm.refresh();
+var cssTab = new WSTab({
+  color: "blue",
+  color2: "white",
+  title: "CSS",
+  tabs: tabs,
+  mode: "css",
+  storageKey: 'CSS_'+hostname,
 });
 
-wind.toolbar.left.append(new Button({
-  className: 'white quiet',
-  caption: 'Save',
-  action: function(){
-    var value = cm.getValue();
-    var obj = {};
-    obj[cssKey] = value;
-    chrome.storage.sync.set(obj);
-  },
-}));
-
-tabs.append(wind);
-
-jsWind = new StandardWindow({
-  color: "yellow"
+var jsTab = new WSTab({
+  color: "yellow",
+  color2: "black",
+  title: "JavaScript",
+  tabs: tabs,
+  mode: "javascript",
+  storageKey: "js_"+hostname,
 });
-jsWind.title = "JavaScript";
-jsWind.toolbar.left.append(new Button({
-  className: 'black quiet',
-  caption: 'Save',
-  action: function(){
-    var value = jsCm.getValue();
-    var obj = {};
-    obj[jsKey] = value;
-    chrome.storage.sync.set(obj);
-  },
-}));
-var jsCm = CodeMirror(jsWind.body.e, {
-  mode: 'javascript',
-  indentWithTabs: false,
-  tabSize: 2,
-  lineNumbers: true,
-  autoRefresh:true,
-  theme: 'neat',
-});
-jsCm.getWrapperElement().classList.add('full-element');
-jsWind.on('activated', function(){
-  jsCm.refresh();
-});
-
-chrome.storage.sync.get(jsKey, function(data){
-  if(data[jsKey] !== undefined){
-    jsCm.setValue(String(data[jsKey]));
-  }
-  jsCm.refresh();
-});
-
-
-tabs.append(jsWind);
 
 document.body.appendChild(main.e);
