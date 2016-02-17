@@ -39,7 +39,7 @@ mkdir -p build
 mkdir -p $DIST_DIR/promo
 
 # A list of files to be included.
-CET_CP="manifest.json background.js editor.html editor.js"
+CET_CP="manifest.json background.js editor.html editor.js popup.html popup.js"
 
 if [ "$1" = "develop" ]; then
 	for file in $CET_CP; do
@@ -49,6 +49,7 @@ if [ "$1" = "develop" ]; then
 	ln -sv $(pwd)/vendor/wf $DEST/wf
 	ln -sv $(pwd)/vendor/jquery $DEST/jquery
 	ln -sv $(pwd)/vendor/codemirror $DEST/codemirror
+	ln -sv $(pwd)/vendor/skjs $DEST/skjs
 
 	render_main_icon
 else
@@ -59,6 +60,7 @@ else
 	cp -rv vendor/wf $DEST/wf
 	cp -rv vendor/codemirror $DEST/codemirror
 	cp -rv vendor/jquery $DEST/jquery
+	cp -rv vendor/skjs $DEST/skjs
 
 	render_main_icon
 

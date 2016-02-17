@@ -23,7 +23,8 @@
             "19": "images/icon_19x19.png",
             "38": "images/icon_38x38.png"
         },
-        "default_title": "Custom CSS and JavaScript for this page"
+        "default_title": "Custom CSS and JavaScript for this page",
+        "default_popup": "popup.html"
     },
     "background": {
         "scripts": ["background.js"]
