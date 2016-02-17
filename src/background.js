@@ -27,33 +27,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
       return;
     }
     tabHostnames[tabId] = hostname;
-    if(true || hostnames.indexOf(hostname) !== -1){
-      var cssKey = "CSS_#"+hostname;
-      var jsKey = "js_#"+hostname;
-      var blKey = "bl_#"+hostname;
-      chrome.storage.sync.get(blKey, function(data){
-        if(data[blKey]){
-          blCache[blKey] = data[blKey];
-        }
-      });
-      chrome.storage.sync.get(cssKey, function(data){
-        if(data[cssKey]){
-          chrome.tabs.insertCSS(tabId, {
-            code: String(data[cssKey]),
-            runAt: "document_start",
-            allFrames: true,
-          });
-        }
-      });
-      chrome.storage.sync.get(jsKey, function(data){
-        if(data[jsKey]){
-          chrome.tabs.executeScript(tabId, {
-            code: String(data[jsKey]),
-            runAt: "document_start",
-            allFrames: true,
-          });
-        }
-      });
+    var patterns = getPatternsForHostname(hostname);
+    console.log("PATTERNS", patterns);
+    for(var i in patterns){
+      applyRecipe(patterns[i], tabId);
     }
   }
 });
@@ -61,33 +38,37 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
 chrome.webRequest.onBeforeRequest.addListener(function(details){
   if(details.tabId != -1){
     //console.log(details.url);
+    var blackList = [];
     var hostname = tabHostnames[details.tabId];
-    var blKey = "bl_#"+hostname;
-    if(blCache[blKey] != null){
-      var blackList = JSON.parse(blCache[blKey]);
-      targetUrl = new URL(details.url);
-      targetSectors = targetUrl.hostname.split(".").reverse();
-      for (var i in blackList){
-        if(urlsMatch(blackList[i], targetSectors)){
-          console.log("BLOCK", targetUrl.hostname);
-          return {cancel: true};
+    patterns = getPatternsForHostname(hostname);
+    for (var i in patterns){
+      var pattern = patterns[i];
+      var blKey = "bl_#"+pattern;
+      if( blCache[blKey] != null ){
+        try{
+          var tempList = JSON.parse(blCache[blKey]);
+          if(tempList instanceof Array){
+            blackList = blackList.concat(tempList);
+          }
+        }
+        catch(e){
+          console.log("ERROR PARSING", blCache[blKey], e);
+          continue;
         }
       }
-      console.log("PASS", targetUrl.hostname);
-      return;
-      if(blackList.indexOf(targetUrl.hostname) !== -1){
+    }
+    console.log(hostname, blackList);
+    targetUrl = new URL(details.url);
+    targetSectors = targetUrl.hostname.split(".").reverse();
+    for (var i in blackList){
+      if(urlsMatch(blackList[i], targetSectors)){
         console.log("BLOCK", targetUrl.hostname);
         return {cancel: true};
       }
-      else{
-        console.log("PASS", targetUrl.hostname);
-      }
     }
-    else{
-      //console.log("Web sauce doesn't have any webRequest hooks for", hostname);
-    }
+    console.log("PASS", targetUrl.hostname);
+    return;
   }
-  //console.log(details.url);
 }, {
   urls: ["<all_urls>"]
 }, ["blocking"]);
@@ -113,6 +94,48 @@ function urlsMatch(pattern, url){
     }
   }
   return true;
+}
+
+function getPatternsForHostname(hostname){
+  var out = [hostname];
+  var sectors = hostname.split('.');
+  for (var i=0; i<sectors.length; i++){
+    var patt = [].concat.call("*", sectors.slice(i+1)).join(".");
+    out.push(patt);
+  }
+  return out;
+}
+
+function applyRecipe(pattern, tabId){
+  console.log("APPLYING", pattern);
+  var cssKey = "CSS_#"+pattern;
+  var jsKey = "js_#"+pattern;
+  var blKey = "bl_#"+pattern;
+  chrome.storage.sync.get(blKey, function(data){
+    if(data[blKey]){
+      blCache[blKey] = data[blKey];
+    }
+  });
+  chrome.storage.sync.get(cssKey, function(data){
+    console.log("GETTING CSS", pattern, cssKey);
+    if(data[cssKey]){
+      console.log("GOT CSS", pattern);
+      chrome.tabs.insertCSS(tabId, {
+        code: String(data[cssKey]),
+        runAt: "document_start",
+        allFrames: true,
+      });
+    }
+  });
+  chrome.storage.sync.get(jsKey, function(data){
+    if(data[jsKey]){
+      chrome.tabs.executeScript(tabId, {
+        code: String(data[jsKey]),
+        runAt: "document_start",
+        allFrames: true,
+      });
+    }
+  });
 }
 
 function handlePageAction(tab){

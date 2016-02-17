@@ -15,5 +15,22 @@ chrome.tabs.query({
         chrome.tabs.create({ url: 'editor.html#' + url.hostname });
       }
     });
+    var sectors = url.hostname.split(".");
+    for (var i=0; i<sectors.length; i++){
+      console.log(i+1, sectors, sectors.slice(i+1));
+      var patt = [].concat.call("*", sectors.slice(i+1)).join(".");
+      element({
+        tag: "div",
+        class: "recipe",
+        parent: "#recipes",
+        content: patt,
+        attributes: {patt: patt},
+        action: function(e){
+          chrome.tabs.create({
+            url: 'editor.html#' + e.currentTarget.getAttribute('patt')
+          });
+        }
+      });
+    }
   }
 });
