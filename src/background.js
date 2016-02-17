@@ -28,7 +28,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
     }
     tabHostnames[tabId] = hostname;
     var patterns = getPatternsForHostname(hostname);
-    console.log("PATTERNS", patterns);
     for(var i in patterns){
       applyRecipe(patterns[i], tabId);
     }
@@ -37,7 +36,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
 
 chrome.webRequest.onBeforeRequest.addListener(function(details){
   if(details.tabId != -1){
-    //console.log(details.url);
     var blackList = [];
     var hostname = tabHostnames[details.tabId];
     if(hostname == null){
@@ -55,12 +53,10 @@ chrome.webRequest.onBeforeRequest.addListener(function(details){
           }
         }
         catch(e){
-          console.log("ERROR PARSING", blCache[blKey], e);
           continue;
         }
       }
     }
-    console.log(hostname, blackList);
     targetUrl = new URL(details.url);
     targetSectors = targetUrl.hostname.split(".").reverse();
     for (var i in blackList){
@@ -110,7 +106,6 @@ function getPatternsForHostname(hostname){
 }
 
 function applyRecipe(pattern, tabId){
-  console.log("APPLYING", pattern);
   var cssKey = "CSS_#"+pattern;
   var jsKey = "js_#"+pattern;
   var blKey = "bl_#"+pattern;
@@ -120,9 +115,7 @@ function applyRecipe(pattern, tabId){
     }
   });
   chrome.storage.sync.get(cssKey, function(data){
-    console.log("GETTING CSS", pattern, cssKey);
     if(data[cssKey]){
-      console.log("GOT CSS", pattern);
       chrome.tabs.insertCSS(tabId, {
         code: String(data[cssKey]),
         runAt: "document_start",
