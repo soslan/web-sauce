@@ -40,6 +40,9 @@ chrome.webRequest.onBeforeRequest.addListener(function(details){
     //console.log(details.url);
     var blackList = [];
     var hostname = tabHostnames[details.tabId];
+    if(hostname == null){
+      return;
+    }
     patterns = getPatternsForHostname(hostname);
     for (var i in patterns){
       var pattern = patterns[i];
