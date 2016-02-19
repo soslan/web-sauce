@@ -24,6 +24,9 @@ TODO
 * [DONE] Implement wildcards for hostnames.
 * [DONE] Switch to pageAction.
 * [DONE] Add hooks on webRequest.
+* Implement whitelist.
+* Add ability to blacklist a hostname from popup.
+* Add ability to block cookies.
 
 License
 =======
