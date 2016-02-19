@@ -1,6 +1,7 @@
 var hostnames = [];
 var tabHostnames = {};
 var blCache = {};
+var blReports = {};
 chrome.pageAction.onClicked.addListener(function(tab) {
   url = 'editor.html#' + new URL(tab.url).hostname;
   chrome.tabs.create({ url: url });
@@ -27,6 +28,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
       return;
     }
     tabHostnames[tabId] = hostname;
+    blReports[tabId] = [];
     var patterns = getPatternsForHostname(hostname);
     for(var i in patterns){
       applyRecipe(patterns[i], tabId);
@@ -35,6 +37,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
 });
 
 chrome.webRequest.onBeforeRequest.addListener(function(details){
+  var tabId = details.tabId;
+  var report;
+  console.log(details);
   if(details.tabId != -1){
     var blackList = [];
     var hostname = tabHostnames[details.tabId];
@@ -61,16 +66,38 @@ chrome.webRequest.onBeforeRequest.addListener(function(details){
     targetSectors = targetUrl.hostname.split(".").reverse();
     for (var i in blackList){
       if(urlsMatch(blackList[i], targetSectors)){
-        console.log("BLOCK", targetUrl.hostname);
+        report = {
+          command: "report_bl",
+          hostname: targetUrl.hostname,
+          status: 'block',
+          tabId: details.tabId,
+        };
+        blReports[tabId].push(report);
+        chrome.runtime.sendMessage(report);
         return {cancel: true};
       }
     }
-    console.log("PASS", targetUrl.hostname);
+    report = {
+      command: "report_bl",
+      hostname: targetUrl.hostname,
+      status: 'pass',
+      tabId: details.tabId,
+    };
+    blReports[tabId].push(report);
+    chrome.runtime.sendMessage(report);
     return;
   }
 }, {
   urls: ["<all_urls>"]
 }, ["blocking"]);
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
+  if(message.command == "get_bulk_reports"){
+    sendResponse({
+      data: blReports[message.tabId],
+    });
+  }
+});
 
 function urlsMatch(pattern, url){
   if(typeof pattern == "string"){

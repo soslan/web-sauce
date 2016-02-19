@@ -1,3 +1,4 @@
+requestedHostnames = {};
 chrome.tabs.query({
   currentWindow: true,
   active: true
@@ -34,3 +35,55 @@ chrome.tabs.query({
     }
   }
 });
+
+thisTab(function(tab){
+  console.log("got tab");
+  chrome.runtime.sendMessage({
+    command: 'get_bulk_reports',
+    tabId: tab.id,
+  }, function(response){
+    console.log(response);
+    for (var i in response.data){
+      applyBLReport(response.data[i]);
+    }
+  });
+});
+
+function applyBLReport(report){
+  if(requestedHostnames[report.hostname] == null){
+    requestedHostnames[report.hostname] = report;
+    var elem = element({
+      parent: "#requests",
+      class: "report",
+    });
+    var status = element({
+      tag: 'span',
+      parent: elem,
+      class: 'status-'+report.status,
+    });
+    var hostname = span({
+      class: 'hostname',
+      content: report.hostname,
+      parent: elem,
+    });
+  }
+}
+
+chrome.runtime.onMessage.addListener(function(message){
+  if (message.command === 'report_bl'){
+    thisTab(function(tab){
+      if(message.tabId === tab.id){
+        applyBLReport(message);
+      }
+    });
+  }
+});
+
+function thisTab(callback){
+  chrome.tabs.query({
+    currentWindow: true,
+    active: true
+  }, function(tabs){
+    callback(tabs[0]);
+  });
+}
