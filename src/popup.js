@@ -52,20 +52,59 @@ thisTab(function(tab){
 function applyBLReport(report){
   if(requestedHostnames[report.hostname] == null){
     requestedHostnames[report.hostname] = report;
+    var expanded = false;
     var elem = element({
       parent: "#requests",
       class: "report",
+      action: function(e){
+        toggleControls();
+        e.stopPropagation();
+        e.preventDefault();
+      }
     });
     var status = element({
       tag: 'span',
       parent: elem,
       class: 'status-'+report.status,
+      action: function(e){
+        e.stopPropagation();
+        e.preventDefault();
+      }
     });
     var hostname = span({
       class: 'hostname',
       content: report.hostname,
       parent: elem,
     });
+    var more = span({
+      class: 'more',
+      parent: elem,
+      action: function(e){
+        toggleControls();
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    });
+    var controls = div({
+      class: 'controls',
+      parent :"#requests",
+      content: 'test',
+    });
+
+    var toggleControls = function(){
+      if(expanded){
+        controls.classList.remove('expanded');
+        elem.classList.remove('active');
+        more.classList.remove('fold');
+        expanded = false;
+      }
+      else{
+        controls.classList.add('expanded');
+        elem.classList.add('active');
+        more.classList.add('fold');
+        expanded = true;
+      }
+    }
   }
 }
 

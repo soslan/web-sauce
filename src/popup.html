@@ -13,7 +13,24 @@
 		}
 
 		.report{
+			padding:5px;
 			white-space: nowrap;
+			display: flex;
+			cursor: pointer;
+		}
+
+		.report:hover,
+		.report:active,
+		.report.active{
+			background-color: #eee;
+		}
+
+		.report > *:not(:last-child){
+			margin-right: .5em;
+		}
+
+		.hostname{
+			flex:1;
 		}
 
 		.status-block:after{
@@ -22,12 +39,39 @@
 		}
 
 		.status-pass:after{
-			content: "	✔ ";
+			content: "✔ ";
 			color: green;
 			//display: inline-block;
 			//border-radius: 1em;
 			//width:1em;
 			//height:1em;
+		}
+
+		.more{
+			cursor:pointer;
+			float: right;
+			color: gray;
+		}
+
+		.more:after{
+			content: "▼ ";
+		}
+
+		.more.fold:after{
+			content: "▲ ";
+		}
+
+		.controls{
+			margin:0 5px 5px;
+			padding:5px;
+			background-color: whitesmoke;
+			height: 0;
+			display: none;
+		}
+
+		.controls.expanded{
+			height: auto;
+			display: block;
 		}
 	</style>
 </head>
