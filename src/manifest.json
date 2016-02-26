@@ -14,9 +14,7 @@
     "permissions": [
         "<all_urls>",
         "tabs",
-        "storage",
-        "webRequest",
-        "webRequestBlocking"
+        "storage"
     ],
     "page_action": {
         "default_icon": {

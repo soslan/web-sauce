@@ -75,13 +75,4 @@ var jsTab = new WSTab({
   storageKey: "js_"+hostname,
 });
 
-var blTab = new WSTab({
-  color: "red",
-  color2: "white",
-  title: "Black list",
-  tabs: tabs,
-  mode: "json",
-  storageKey: "bl_"+hostname,
-});
-
 document.body.appendChild(main.e);
