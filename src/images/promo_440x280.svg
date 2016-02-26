@@ -1,42 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="440"
-   height="280"
-   viewBox="0 0 440 280"
-   id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="promo_440x280.svg">
+   id="svg2"
+   viewBox="0 0 440 280"
+   height="280"
+   width="440">
   <defs
      id="defs4" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="1.0003729"
-     inkscape:cx="184.70229"
-     inkscape:cy="178.22775"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     showgrid="false"
-     units="px"
-     inkscape:window-width="1366"
-     inkscape:window-height="704"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -50,63 +25,53 @@
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0,-772.36216)">
+     transform="translate(0,-772.36216)"
+     id="layer1">
     <rect
-       style="opacity:0.98999999;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4240"
-       width="440"
-       height="280"
+       y="772.36218"
        x="0"
-       y="772.36218" />
+       height="280"
+       width="440"
+       id="rect4240"
+       style="opacity:0.98999999;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <g
-       transform="matrix(1.25,0,0,1.25,145.0001,789.52212)"
-       id="g4165">
+       id="g4165"
+       transform="matrix(1.25,0,0,1.25,145.0001,789.52212)">
       <path
-         style="fill:#264de4;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="M 32.333333,0 30,20 l -8.333333,0 0,5 L 15,25 l 0,95 20,0 20,0 0,-95 -6.666667,0 0,-5 L 40,20 37.666667,0 35,0 Z"
          id="path4287"
-         inkscape:connector-curvature="0" />
+         d="M 32.333333,0 30,20 l -8.333333,0 0,5 L 15,25 l 0,95 20,0 20,0 0,-95 -6.666667,0 0,-5 L 40,20 37.666667,0 35,0 Z"
+         style="fill:#264de4;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
       <path
-         id="path4289"
-         d="M 82.33333,0 80,20 l -8.33333,0 0,5 L 65,25 l 0,95 20,0 20,0 0,-95 -6.66667,0 0,-5 L 90,20 87.66667,0 85,0 Z"
          style="fill:#d7bd0e;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         inkscape:connector-curvature="0" />
+         d="M 82.33333,0 80,20 l -8.33333,0 0,5 L 65,25 l 0,95 20,0 20,0 0,-95 -6.66667,0 0,-5 L 90,20 87.66667,0 85,0 Z"
+         id="path4289" />
     </g>
     <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:75%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="113.1026"
-       y="974.20221"
        id="text4151"
-       sodipodi:linespacing="75%"><tspan
-         sodipodi:role="line"
-         id="tspan4153"
+       y="974.20221"
+       x="113.1026"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:75%;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         y="974.20221"
          x="113.1026"
-         y="974.20221">Web sauce</tspan></text>
+         id="tspan4153">Web sauce</tspan></text>
     <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:21.54088783px;line-height:75%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="167.54053"
-       y="928.66974"
        id="text4155"
-       sodipodi:linespacing="75%"><tspan
-         sodipodi:role="line"
-         id="tspan4157"
+       y="928.66974"
+       x="167.54053"
+       style="font-style:normal;font-weight:normal;font-size:21.54088783px;line-height:75%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         y="928.66974"
          x="167.54053"
-         y="928.66974">CSS</tspan></text>
+         id="tspan4157">CSS</tspan></text>
     <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.5403595px;line-height:75%;font-family:monospace;-inkscape-font-specification:monospace;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="238.42371"
-       y="928.67517"
        id="text4159"
-       sodipodi:linespacing="75%"><tspan
-         sodipodi:role="line"
-         id="tspan4161"
+       y="928.67517"
+       x="238.42371"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.5403595px;line-height:75%;font-family:monospace;-inkscape-font-specification:monospace;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         y="928.67517"
          x="238.42371"
-         y="928.67517">JS</tspan></text>
+         id="tspan4161">JS</tspan></text>
   </g>
 </svg>

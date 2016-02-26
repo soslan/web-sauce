@@ -65,8 +65,8 @@ else
 	render_main_icon
 
 	convert -background none src/images/promo_440x280.svg $DIST_DIR/promo/promo_440x280.png
-	#convert -background none src/images/promo_920x680.svg $DIST_DIR/promo/promo_920x680.png
-	#convert -background none src/images/promo_1400x560.svg $DIST_DIR/promo/promo_1400x560.png
+	convert -background none src/images/promo_920x680.svg $DIST_DIR/promo/promo_920x680.png
+	convert -background none src/images/promo_1400x560.svg $DIST_DIR/promo/promo_1400x560.png
 
 
 	cd dist/
