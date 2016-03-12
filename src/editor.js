@@ -14,6 +14,16 @@ function WSTab(args){
       chrome.storage.sync.set(obj);
     },
   }));
+  wind.on('keydown', function(e){
+    if(e.keyCode === 83 && e.ctrlKey){
+      var value = cm.getValue();
+      var obj = {};
+      obj[storageKey] = value;
+      chrome.storage.sync.set(obj);
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  });
   var cm = CodeMirror(wind.body.e, {
     mode: args.mode || '',
     indentWithTabs: false,
