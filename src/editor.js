@@ -1,25 +1,23 @@
 function WSTab(args){
+  var self = this;
   var storageKey = String(args.storageKey);
+  this.storageKey = storageKey;
   var wind = new StandardWindow({
     color: args.color || "orange",
   });
+  this.asterisk = span('*');
+  this.asterisk.e.style.display = 'none';
   wind.title = args.title || "Untitled";
   wind.toolbar.left.append(new Button({
     className: ( args.color2 ? args.color2 : 'orange' ) + ' quiet',
     caption: 'Save',
     action: function(){
-      var value = cm.getValue();
-      var obj = {};
-      obj[storageKey] = value;
-      chrome.storage.sync.set(obj);
+      self.save();
     },
   }));
   wind.on('keydown', function(e){
     if(e.keyCode === 83 && e.ctrlKey){
-      var value = cm.getValue();
-      var obj = {};
-      obj[storageKey] = value;
-      chrome.storage.sync.set(obj);
+      self.save();
       e.stopPropagation();
       e.preventDefault();
     }
@@ -40,6 +38,10 @@ function WSTab(args){
   chrome.storage.sync.get(storageKey, function(data){
     if(data[storageKey] !== undefined){
       cm.setValue(String(data[storageKey]));
+      cm.on('change', function(e){
+        wind.tabViewHandle.e.style.fontWeight = 900;
+        self.asterisk.e.style.display = null;
+      });
     }
     cm.refresh();
   });
@@ -48,7 +50,19 @@ function WSTab(args){
   this.cm = cm;
   if(args.tabs instanceof Element){
     args.tabs.append(wind);
+    wind.tabViewHandle.append(this.asterisk);
   }
+}
+
+WSTab.prototype.save = function(){
+  var self = this;
+  var value = this.cm.getValue();
+  var obj = {};
+  obj[this.storageKey] = value;
+  chrome.storage.sync.set(obj, function(){
+    self.main.tabViewHandle.e.style.fontWeight = null;
+    self.asterisk.e.style.display = 'none';
+  });
 }
 
 var main = new StandardWindow({

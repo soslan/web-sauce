@@ -1383,7 +1383,7 @@ Value.prototype.getAsNode = function(){
 }
 
 ;
-function BooleanModel(){
+function BooleanModel(args){
 	var args, self;
 	args = args || {};
 	if(typeof arguments[0] === "boolean"){
@@ -3341,7 +3341,6 @@ function ToggleButton(args){
 	}
 	else{
 		this.value = new BooleanModel({
-			value:args.defaultValue == undefined ? false : args.defaultValue,
 			onOn: function(){
 				console.log("on");
 				self.removeClass('inactive');
@@ -3365,6 +3364,7 @@ function ToggleButton(args){
 				}
 			},
 		});
+		this.value.setValue(args.defaultValue == undefined ? false : args.defaultValue);
 	}
 
 	/*this.addEventListener('mousedown touchstart',function(e){
@@ -4419,6 +4419,15 @@ function Lines(args){
 
 Lines.prototype = Object.create(Element.prototype);
 
+function Bar(args){
+  var self = this;
+  args = args || {};
+  Element.call(this,args);
+  this.addClass('bar');
+}
+
+Bar.prototype = Object.create(Element.prototype);
+
 function StandardWindow(args, toobarArgs, bodyArgs){
 	var self = this;
 	args = args || {};
@@ -5141,11 +5150,12 @@ TabView.prototype.append = function(container, handleArgs){
 			text:handleArgs,
 		};
 	}
-	this.tabs.append(container.getHandle({
+	container.tabViewHandle = container.getHandle({
 		color: container.color || handleArgs.color,
 		closeable: container.closeable || handleArgs.closeable,
 		text: container.title || handleArgs.title || handleArgs.text,
-	}));
+	});
+	this.tabs.append(container.tabViewHandle);
 }
 
 
@@ -6149,244 +6159,4 @@ ListDataView.prototype.onNewItem = function(row, element, callback){
 	if(typeof callback === "function"){
 		callback(element);
 	}
-}
-;
-var mainColor = new StringModel('gainsboro');
-function WindowManager (args){
-  var self = this;
-  args = args || {};
-  Element.call(this, args);
-  this.addClass('stag-root');
-  this.windowManager = new StagWindowManager();
-  this.windowManager.style({
-    flex:'1',
-  });
-  this.menu = this.windowManager.menuButton.panel;
-
-  this.append(this.windowManager);
-  this.apps = {};
-  document.body.appendChild(this.e);
-
-};
-
-WindowManager.prototype = Object.create(Element.prototype);
-
-WindowManager.prototype.registerApp = function(args){
-  args = args || {};
-  var self = this;
-  if (args.key === undefined || args.key in this.apps){
-    return;
-  }
-  var app = {
-    onRun: args.onRun || function(){},
-    name: args.name || "Unnamed App",
-    color: args.color || mainColor,
-    key:args.key,
-  };
-  try{
-    app.menuItem = new Element({
-      className:'stag-menu-item clickable',
-    });
-
-    app.menuItem.append(app.name || "Unnamed App");
-    app.menuItem.addClass(app.color || mainColor);
-    this.windowManager.menuMiddle.append(app.menuItem);
-    app.menuItem.setAction(function(){
-      self.runApp(app.key);
-    });
-  }
-  catch(e){
-    throw(e);
-
-  }
-  this.apps[app.key] = app;
-};
-
-WindowManager.prototype.runApp = function(key){
-  this.apps[key].onRun(this.apps[key]);
-  // try{
-  //  this.apps[key].onRun(this.apps[key]);
-  // }
-  // catch(e){
-  //  throw(e);
-  // }
-}
-
-WindowManager.prototype.addWindow = function(wind, handleArgs){
-  var self = this;
-  handleArgs = handleArgs || {};
-  wind = wind || new StandardWindow();
-  this.windowManager.windows.append(wind);
-  var handle = wind.getHandle({
-    color: wind.color || handleArgs.color,
-    closeable: wind.closeable || handleArgs.closeable,
-    text: wind.title || handleArgs.title || handleArgs.text,
-  });
-  this.windowManager.toolbar.append(handle);
-  this.windowManager.windows.switchTo(wind);
-
-  return wind;
-}
-
-function StagWindowManager(args){
-  var self = this;
-  args = args || {};
-  Windows.call(this, args);
-  this.e.style.justifyContent = 'center';
-  this.bodyContainer = new Container({
-    share:1,
-  });
-  this.toolbar = new Toolbar({
-    className:'white mh-r',
-  });
-  this.menuButton = new Dropdown({
-    className:'quiet',
-    icon:'apps',
-  },{
-    className:'stag-menu',
-    contentType:'lines',
-  });
-  this.menuButton.e.id = "stag-start stag-menu";
-  //this.menuButton.addClass('pink');
-  this.filterElement = new TextInputCore({
-    className:'stag-menu-filter',
-  });
-  this.filterElement.addClass('white');
-  this.menuButton.button.addClass(mainColor);
-  //this.menuButton.panel.append(this.filterElement);
-  //this.menuButton.panel.addClass('white');
-  this.menuTop = new Element({
-    appendTo:this.menuButton.panel,
-  });
-  this.menuMiddle = new Element({
-    appendTo:this.menuButton.panel,
-  });
-  this.menuBottom = new Element({
-    appendTo:this.menuButton.panel,
-  });
-  this.toolbar.append(this.menuButton);
-  this.windows = new Windows({
-    share:1,
-  });
-
-
-  this.addClass('window-manager');
-
-  this.append(this.bodyContainer);
-  this.bodyContainer.append(this.toolbar);
-  this.bodyContainer.append(this.windows);
-  
-
-  
-}
-
-StagWindowManager.prototype = Object.create(Windows.prototype);
-
-
-// To be removed
-StagWindowManager.prototype.create = function(args, handleArgs){
-  var self = this;
-  args = args || {};
-  args.color = args.color || 'white';
-  var container = new Containers({
-    share:1,
-  });
-  container.addClass(args.color);
-  //self.windows.append(container);
-  
-  if(args.open == true){
-    self.windows.appendAndShow(container);
-  }
-  else{
-    self.windows.append(container);
-  }
-  handleArgs = handleArgs || {};
-  handleArgs.text = args.title;
-  var handle = container.getHandle(handleArgs);
-  handle.addClass(args.color);
-  this.toolbar.append(handle);
-
-  return container;
-}
-
-function StagWindow(args){
-  var self = this;
-  args = args || {};
-  Element.call(this, args);
-  this.addClass('stag-window');
-  //this.addClass(args.className);
-
-  this.color = args.toolbarStyle || args.color || 'black';
-  this.bgColor = args.bodyStyle || args.bgColor || 'white';
-  this.title = args.title || "Window";
-  this.closeable = Boolean(args.closeable) || false;
-
-  this.toolbar = new Toolbar({
-    className:'stag-window-toolbar'
-  });
-  this.body = new Container({
-    share:1,
-    className:'stag-window-body'
-  });
-  this.body.addClass(this.bgColor);
-  this.toolbar.addClass(this.color);
-  var titleElement = new Element({
-    tagName:'h3',
-    className:'title h3 stag-window-title',
-    appendTo: this.toolbar,
-  });
-
-  // Experiment. Going full page on double click. Animations should be done in CSS.
-  this.toolbar.on('dblclick', function(e){
-    console.log('TTT');
-    if(stag.fullScreenMode){
-      stag.fullScreenMode = false;
-      stag.$.animate({
-        top:'0px',
-      });
-      stag.windowManager.menuButton.$.animate({
-        top:'0px',
-      });
-      self.toolbar.$.animate({
-        paddingLeft:'5px',
-      });
-    }
-    else{
-      stag.windowManager.menuButton.$.css({
-        zIndex:1000,
-      });
-      stag.windowManager.menuButton.removeClass('quiet');
-      stag.windowManager.menuButton.addClass('white');
-      stag.fullScreenMode = true;
-      stag.$.animate({
-        top:'-36px',
-      });
-      stag.windowManager.menuButton.$.animate({
-        top:'36px',
-      });
-      self.toolbar.$.animate({
-        paddingLeft:'36px',
-      });
-
-    }
-    e.stopPropagation();
-    e.preventDefault();
-    
-  });
-  this.toolbar.e.addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
-
-  titleElement.append(this.title);
-
-  Element.prototype.append.call(this, this.toolbar);
-  Element.prototype.append.call(this, this.body);
-};
-
-StagWindow.prototype = Object.create(Element.prototype);
-
-StagWindow.prototype.append = function(arg1){
-  this.body.append(arg1);
-};
-
-StagWindow.prototype.run = function(){
-  stag.addWindow(this);
 }
