@@ -23,6 +23,8 @@ TODO
 * [DONE] Ability to add custom CSS and JavaScript to a web page by its hostname.
 * [DONE] Implement wildcards for hostnames.
 * [DONE] Switch to pageAction
+* Add option of whether to inject to all frames or just the top one.
+* Implement import and export.
 
 License
 =======

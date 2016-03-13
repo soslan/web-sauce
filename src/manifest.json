@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Web sauce",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Chrome extension for adding custom CSS and JS",
     "icons": {
         "16": "images/icon_16x16.png",
