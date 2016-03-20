@@ -38,13 +38,21 @@ function WSTab(args){
   chrome.storage.sync.get(storageKey, function(data){
     if(data[storageKey] !== undefined){
       cm.setValue(String(data[storageKey]));
+      self.savedValue = String(data[storageKey]);
     }
     else{
       cm.setValue('');
+      self.savedValue = '';
     }
     cm.on('change', function(e){
-      wind.tabViewHandle.e.style.fontWeight = 900;
-      self.asterisk.e.style.display = null;
+      if(self.savedValue !== cm.getValue()){
+        wind.tabViewHandle.e.style.fontWeight = 900;
+        self.asterisk.e.style.display = null;
+      }
+      else{
+        self.main.tabViewHandle.e.style.fontWeight = null;
+        self.asterisk.e.style.display = 'none';
+      }
     });
     cm.refresh();
   });
@@ -62,6 +70,7 @@ WSTab.prototype.save = function(){
   var value = this.cm.getValue();
   var obj = {};
   obj[this.storageKey] = value;
+  this.savedValue = value;
   chrome.storage.sync.set(obj, function(){
     self.main.tabViewHandle.e.style.fontWeight = null;
     self.asterisk.e.style.display = 'none';
