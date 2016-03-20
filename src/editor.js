@@ -27,12 +27,15 @@ function WSTab(args){
     indentWithTabs: false,
     tabSize: 2,
     lineNumbers: true,
+    autoFocus: true,
     autoRefresh:true,
     theme: 'neat',
   });
+  wind.focusing(cm.getWrapperElement());
   cm.getWrapperElement().classList.add('full-element');
   wind.on('activated', function(){
     cm.refresh();
+    cm.focus();
   });
 
   chrome.storage.sync.get(storageKey, function(data){
@@ -55,6 +58,7 @@ function WSTab(args){
       }
     });
     cm.refresh();
+    cm.focus();
   });
 
   this.main = wind;
