@@ -38,11 +38,14 @@ function WSTab(args){
   chrome.storage.sync.get(storageKey, function(data){
     if(data[storageKey] !== undefined){
       cm.setValue(String(data[storageKey]));
-      cm.on('change', function(e){
-        wind.tabViewHandle.e.style.fontWeight = 900;
-        self.asterisk.e.style.display = null;
-      });
     }
+    else{
+      cm.setValue('');
+    }
+    cm.on('change', function(e){
+      wind.tabViewHandle.e.style.fontWeight = 900;
+      self.asterisk.e.style.display = null;
+    });
     cm.refresh();
   });
 
