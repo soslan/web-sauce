@@ -4,13 +4,13 @@ var tabHostnames = {};
 chrome.tabs.query({}, function(results){
   for(var i in results){
     var tab = results[i];
-    handlePageAction(tab);
+    handleBrowserAction(tab);
   }
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
   if( info.status === "loading" ) {
-    handlePageAction(tab);
+    handleBrowserAction(tab);
   }
 });
 
@@ -86,12 +86,12 @@ function applyRecipe(pattern, tabId){
   });
 }
 
-function handlePageAction(tab){
+function handleBrowserAction(tab){
   var protocol = new URL(tab.url).protocol;
   if( protocol === "http:" || protocol === "https:" ){
-    chrome.pageAction.show(tab.id);
+    chrome.browserAction.show(tab.id);
   }
   else{
-    chrome.pageAction.hide(tab.id);
+    chrome.browserAction.hide(tab.id);
   }
 }
