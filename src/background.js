@@ -1,5 +1,10 @@
 var hostnames = [];
 var tabHostnames = {};
+var recipeCounters = {};
+
+chrome.browserAction.setBadgeBackgroundColor({
+  color: '#000',
+});
 
 chrome.tabs.query({}, function(results){
   for(var i in results){
@@ -10,6 +15,7 @@ chrome.tabs.query({}, function(results){
 
 chrome.tabs.onUpdated.addListener(function(tabId, info, tab){
   if( info.status === "loading" ) {
+    recipeCounters[tabId] = 0;
     handleBrowserAction(tab);
   }
 });
@@ -68,6 +74,10 @@ function applyRecipe(pattern, tabId){
 
   chrome.storage.sync.get(cssKey, function(data){
     if(data[cssKey]){
+      chrome.browserAction.setBadgeText({
+        text: String(++recipeCounters[tabId]),
+        tabId: tabId,
+      });
       chrome.tabs.insertCSS(tabId, {
         code: String(data[cssKey]),
         runAt: "document_start",
@@ -77,6 +87,10 @@ function applyRecipe(pattern, tabId){
   });
   chrome.storage.sync.get(jsKey, function(data){
     if(data[jsKey]){
+      chrome.browserAction.setBadgeText({
+        text: String(++recipeCounters[tabId]),
+        tabId: tabId,
+      });
       chrome.tabs.executeScript(tabId, {
         code: String(data[jsKey]),
         runAt: "document_start",
