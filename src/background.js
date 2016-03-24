@@ -73,7 +73,7 @@ function applyRecipe(pattern, tabId){
   var jsKey = "js_#"+pattern;
 
   chrome.storage.sync.get(cssKey, function(data){
-    if(data[cssKey]){
+    if(data[cssKey] != null){
       chrome.browserAction.setBadgeText({
         text: String(++recipeCounters[tabId]),
         tabId: tabId,
@@ -86,7 +86,7 @@ function applyRecipe(pattern, tabId){
     }
   });
   chrome.storage.sync.get(jsKey, function(data){
-    if(data[jsKey]){
+    if(data[jsKey] != null){
       chrome.browserAction.setBadgeText({
         text: String(++recipeCounters[tabId]),
         tabId: tabId,
