@@ -3,13 +3,50 @@
 <head>
 	<meta charset="UTF-8">
 	<style type="text/css">
-		.recipe{
-			padding: 5px;
+		.entry{
+			display: flex;
+			flex-direction: row;
 			cursor: pointer;
+			margin-bottom: 5px;
 		}
 
-		.recipe:hover{
+		.entry:hover{
 			background-color: #eee;
+		}
+
+		.entry-name{
+			flex: 1;
+			display: inline-block;
+			padding: 5px;
+		}
+
+		.css-label{
+			opacity: 0;
+			color: gray;
+			padding: 5px;
+			font-weight: bold;
+		}
+
+		.css-label:hover{
+			background: blue;
+			color:white;
+		}
+
+		.js-label{
+			opacity: 0;
+			color: gray;
+			padding: 5px;
+			font-weight: bold;
+		}
+
+		.js-label:hover{
+			background: gold;
+			color: black;
+		}
+
+		.js-label.on,
+		.css-label.on{
+			opacity: 1;
 		}
 	</style>
 </head>
