@@ -1,3 +1,10 @@
+# 0.3.0
+
+## Features
+
+- Show the number of recipes applied.
+- Show if CSS or JS recipe exists for each pattern in popup.
+
 # 0.2.2
 
 ## Fixed
