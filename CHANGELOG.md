@@ -1,3 +1,10 @@
+# 0.3.1
+
+## Fixed
+
+- Fix wrong recipe counter.
+- Fix browser action not being disabled on non-http(s) protocols.
+
 # 0.3.0
 
 ## Features
