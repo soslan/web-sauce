@@ -103,9 +103,9 @@ function applyRecipe(pattern, tabId){
 function handleBrowserAction(tab){
   var protocol = new URL(tab.url).protocol;
   if( protocol === "http:" || protocol === "https:" ){
-    chrome.browserAction.show(tab.id);
+    chrome.browserAction.enable(tab.id);
   }
   else{
-    chrome.browserAction.hide(tab.id);
+    chrome.browserAction.disable(tab.id);
   }
 }
